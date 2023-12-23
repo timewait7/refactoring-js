@@ -1,3 +1,18 @@
+const invoice = {
+    customer: "BigCo",
+    performances: [
+        {playID: "hamlet", audience: 55},
+        {playID: "as-like", audience: 35},
+        {playID: "othello", audience: 40}
+    ]
+};
+
+const plays = {
+    "hamlet": {name: "Hamlet", type: "tragedy"},
+    "as-like": {name: "As You Like It", type: "comedy"},
+    "othello": {name: "Othello", type: "tragedy"}
+};
+
 function statement(invoice, plays) {
     let totalAmount = 0;
     let volumeCredits = 0;
@@ -11,16 +26,16 @@ function statement(invoice, plays) {
         }).format;
 
     for (let perf of invoice.performances) {
-        let thisAmount = amountFor(perf, playFor(perf, plays));
+        let thisAmount = amountFor(perf);
 
         // add volume credits
         volumeCredits += Math.max(perf.audience - 30, 0);
         // add extra credit for every ten comedy attendees
-        if ("comedy" === playFor(perf, plays).type)
+        if ("comedy" === playFor(perf).type)
             volumeCredits += Math.floor(perf.audience / 5);
 
         // print line for this order
-        result += ` ${playFor(perf, plays).type}: ${format(thisAmount / 100)} (${perf.audience} seats)\n`;
+        result += ` ${playFor(perf).type}: ${format(thisAmount / 100)} (${perf.audience} seats)\n`;
         totalAmount += thisAmount;
     }
     result += `Amount owed is ${format(totalAmount / 100)}\n`;
@@ -29,9 +44,9 @@ function statement(invoice, plays) {
 }
 
 // Extract Function
-function amountFor(aPerformance, play) {
+function amountFor(aPerformance) {
     let result = 0;
-    switch (play.type) {
+    switch (playFor(aPerformance).type) {
         case "tragedy":
             result = 40000;
             if (aPerformance.audience > 30) {
@@ -51,23 +66,8 @@ function amountFor(aPerformance, play) {
     return result;
 }
 
-function playFor(aPerformance, plays) {
+function playFor(aPerformance) {
     return plays[aPerformance.playID];
 }
-
-const invoice = {
-    customer: "BigCo",
-    performances: [
-        {playID: "hamlet", audience: 55},
-        {playID: "as-like", audience: 35},
-        {playID: "othello", audience: 40}
-    ]
-};
-
-const plays = {
-    "hamlet": {name: "Hamlet", type: "tragedy"},
-    "as-like": {name: "As You Like It", type: "comedy"},
-    "othello": {name: "Othello", type: "tragedy"}
-};
 
 console.log(statement(invoice, plays));
