@@ -19,10 +19,6 @@ function statement(invoice, plays) {
     return renderPlainText(createStatementData(invoice, plays))
 }
 
-function htmlStatement(invoice, plays) {
-    return renderHtml(createStatementData(invoice, plays));
-}
-
 // Phase 2: render
 function renderPlainText(data) {
     let result = `Statement for ${data.customer}\n`;
@@ -33,6 +29,12 @@ function renderPlainText(data) {
     result += `Amount owed is ${usd(data.totalAmount)}\n`;
     result += `You earned ${data.totalVolumeCredits} credits\n`;
     return result;
+}
+
+console.log(statement(invoice, plays));
+
+function htmlStatement(invoice, plays) {
+    return renderHtml(createStatementData(invoice, plays));
 }
 
 // Phase 2: render
@@ -59,7 +61,5 @@ function usd(aNumber) {
             minimumFractionDigits: 2
         }).format(aNumber / 100);
 }
-
-console.log(statement(invoice, plays));
 
 console.log(htmlStatement(invoice, plays));
