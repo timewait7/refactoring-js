@@ -21,6 +21,7 @@ function htmlStatement(invoice, plays) {
     return renderHtml(createStatementData(invoice, plays));
 }
 
+// Phase 2: render
 function renderPlainText(data) {
     let result = `Statement for ${data.customer}\n`;
     for (let perf of data.performances) {
@@ -32,6 +33,7 @@ function renderPlainText(data) {
     return result;
 }
 
+// Phase 2: render
 function renderHtml(data) {
     let result = `<h1>Statement for ${data.customer}</h1>\n`;
     result += "<table>\n";
@@ -56,6 +58,7 @@ function usd(aNumber) {
         }).format(aNumber / 100);
 }
 
+// Phase 1: calculate
 function createStatementData(invoice, plays) {
     const result = {};
     result.customer = invoice.customer;
